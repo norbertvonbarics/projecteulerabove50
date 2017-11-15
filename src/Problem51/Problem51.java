@@ -4,7 +4,10 @@ import Utils.Prime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * By replacing the 1st digit of the 2-digit number *3, it turns out that six of the
@@ -18,49 +21,51 @@ import java.util.List;
  * Find the smallest prime which, by replacing part of the number
  * (not necessarily adjacent digits) with the same digit, is part of an eight prime value family.
  */
+
+
+/**
+ * We induced that for an eight prime value family we were looking for a 6-digit prime number with 3
+ * repeated digits. You can’t have 2 or 4 repeating digits because at least one of the 8 versions
+ * will be divisible by 3. There are only 68,906 6-digit prime numbers to consider, but with some
+ * thought we could eliminate most of them. Here’s the process we used:
+ *
+ * 1. We need look at only those primes that have exactly 3 repeating digits.
+ * 2. The last (least significant) digit can’t be the repeating digit, because replacing it would
+ * allow composite numbers.
+ * 3. Lastly, since we are checking for an eight prime value family, we need only those
+ * primes that have their repeating digit 0, 1 or 2; this reduced the set to only 1,305 primes.
+ */
 public class Problem51 {
 
-  Prime prime = new Prime();
-  List<Integer> primes = getPrimes(10000);
+  private Prime prime = new Prime();
 
   public boolean problem51Solution() {
-    System.out.println(getPrimes(10));
-    int num = 189402354;
-    System.out.println(sortCharArray(num));
+    System.out.println(getPrimes().size());
     return false;
   }
 
-  private List<Integer> getPrimes(int size) {
+  private List<Integer> getPrimes() {
     List<Integer> primes = new ArrayList<>();
-    for (int i = 0; ; i++) {
-      if (prime.isPrime(i)) {
+    for (int i = 100000; i < 1000000; i++) {
+      System.out.println(i);
+      if(checkDigits(i)){
         primes.add(i);
       }
-      if (primes.size() > 9) {
-        return primes;
-      }
     }
+    return primes;
   }
 
-  private boolean checkDigits() {
-    for (int i = 0; i < primes.size(); i++) {
-      for (int j = 0; j < 8; j++) {
-      }
+  private boolean checkDigits(int number) {
+    String numberAsString = Integer.toString(number);
+    List<Character> chars = numberAsString.chars().mapToObj(e -> (char) e)
+        .collect(Collectors.toList());
+    if (numberAsString.chars().filter(num -> num == '2').count() == 3) {
+      return false;
     }
-    return false;
-  }
-
-  private int sortCharArray(int num) {
-    String text = Integer.toString(num);
-    List<Character> sorted = new ArrayList<>();
-    for (int i = 0; i < text.length(); i++) {
-      sorted.add(text.charAt(i));
+    if (numberAsString.chars().filter(num -> num == '4').count() == 3) {
+      return false;
     }
-    Collections.sort(sorted);
-    StringBuilder returnText = new StringBuilder();
-    for (Character aSorted : sorted) {
-      returnText.append(aSorted);
-    }
-    return Integer.parseInt(returnText.toString());
+    Set<Character> charSet = new HashSet<>(chars);
+    return charSet.size() == 4 && prime.isPrime(number);
   }
 }
