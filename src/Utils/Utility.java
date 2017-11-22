@@ -28,6 +28,14 @@ public class Utility {
     return text.toString();
   }
 
+  public String charArrayToString(char[] array) {
+    StringBuilder temp = new StringBuilder();
+    for (char c: array) {
+      temp.append(c);
+    }
+    return temp.toString();
+  }
+
   public int characterOccurence(String text, char c) {
     return (int) text.chars().filter(num -> num == c).count();
   }

@@ -3,7 +3,9 @@ package Problem51;
 import Utils.Prime;
 import Utils.Utility;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * By replacing the 1st digit of the 2-digit number *3, it turns out that six of the nine possible
@@ -22,10 +24,9 @@ import java.util.List;
  * will be divisible by 3. There are only 68,906 6-digit prime numbers to consider, but with some
  * thought we could eliminate most of them. Here’s the process we used:
  *
- * 1. We need look at only those primes that have exactly 3 repeating digits.
- * 2. The last (least significant) digit can’t be the repeating digit, because replacing it
- * would allow composite numbers.
- * 3. Lastly, since we are checking for an eight prime value family, we need only those
+ * 1. We need look at only those primes that have exactly 3 repeating digits. 2. The last (least
+ * significant) digit can’t be the repeating digit, because replacing it would allow composite
+ * numbers. 3. Lastly, since we are checking for an eight prime value family, we need only those
  * primes that have their repeating digit 0, 1 or 2; this reduced the set to only 1,305 primes.
  */
 public class Problem51 {
@@ -35,25 +36,12 @@ public class Problem51 {
   private List<Integer> primes = getPrimes();
 
   public String problem51Solution() {
-    System.out.println(primes.size());
     return checkListForLowestPrimeOfTheFamily();
   }
 
 
-  private boolean checkChars(String num1, String num2) {
-    int counter = 0;
-    for (int i = 0; i < num1.length(); i++) {
-      if(num1.charAt(i) == num2.charAt(i)) {
-        counter++;
-      }
-      if(counter >= 3) {return true;}
-    }
-    return false;
-  }
-
   private String checkListForLowestPrimeOfTheFamily() {
-    for (int i = 0; i < primes.size(); i++) {
-      System.out.println(i);
+    for (int i = 0; i < primes.size() - 8; i++) {
       if (checkNextSeven(i)) {
         return Integer.toString(primes.get(i));
       }
@@ -63,14 +51,19 @@ public class Problem51 {
 
   private boolean checkNextSeven(int index) {
     String num = Integer.toString(primes.get(index));
-    int counter = 1;
-    for (int i = index; i < primes.size(); i++) {
-      String tempNum = Integer.toString(primes.get(i));
-      if (checkChars(num, tempNum)) {
+    int counter = 0;
+    String characters = "123456789";
+    for (int i = 0; i < characters.length(); i++) {
+      char[] tempArray = num.toCharArray();
+      tempArray[0] = characters.charAt(i);
+      tempArray[2] = characters.charAt(i);
+      tempArray[4] = characters.charAt(i);
+      String tempNum = utility.charArrayToString(tempArray);
+      if (prime.isPrime(Integer.parseInt(tempNum))) {
         counter++;
       }
     }
-    return counter == 7;
+    return counter == 8;
   }
 
   private List<Integer> getPrimes() {
@@ -85,17 +78,9 @@ public class Problem51 {
 
   private boolean checkDigits(int number) {
     String numberAsString = Integer.toString(number);
-    boolean checkCharacters = utility.characterOccurence(numberAsString, '0') == 3
-        || utility.characterOccurence(numberAsString, '1') == 3
-        || utility.characterOccurence(numberAsString, '2') == 3;
-
-    boolean lastCharacter;
-    if (utility.characterOccurence(numberAsString, '1') == 3 && number % 10 == 1) {
-      lastCharacter = false;
-    } else {
-      lastCharacter = true;
-    }
-    return prime.isPrime(number) && checkCharacters && lastCharacter;
+    boolean checkCharacters = numberAsString.charAt(0) == numberAsString.charAt(2)
+        && numberAsString.charAt(2) == numberAsString.charAt(4);
+    return prime.isPrime(number) && checkCharacters;
   }
 }
 
