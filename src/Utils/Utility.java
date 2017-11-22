@@ -4,14 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by The allmighty
- * ____________________  ____   _____  _________________________
- * \______   \______   \/_   | /     \ \_____  \______   \   _  \
- * |     ___/|       _/ |   |/  \ /  \  _(__  <|       _/  /_\  \
- * |    |    |    |   \ |   /    Y    \/       \    |   \  \_/   \
- * |____|    |____|_  / |___\____|__  /______  /____|_  /\_____  /
- *                  \/              \/       \/       \/       \/
- * on 2017. 11. 15..
+ * Created by The allmighty ____________________  ____   _____  _________________________ \______
+ * \______   \/_   | /     \ \_____  \______   \   _  \ |     ___/|       _/ |   |/  \ /  \  _(__ <|
+ *       _/  /_\  \ |    |    |    |   \ |   /    Y    \/       \    |   \  \_/   \ |____| |____|_
+ * / |___\____|__  /______  /____|_  /\_____  / \/              \/       \/       \/ \/ on 2017. 11.
+ * 15..
  */
 public class Utility {
 
@@ -30,7 +27,7 @@ public class Utility {
 
   public String charArrayToString(char[] array) {
     StringBuilder temp = new StringBuilder();
-    for (char c: array) {
+    for (char c : array) {
       temp.append(c);
     }
     return temp.toString();

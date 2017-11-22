@@ -1,11 +1,9 @@
-package Problem51;
+package Problems;
 
 import Utils.Prime;
 import Utils.Utility;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * By replacing the 1st digit of the 2-digit number *3, it turns out that six of the nine possible

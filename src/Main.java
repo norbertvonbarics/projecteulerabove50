@@ -1,11 +1,11 @@
-import Problem51.Problem51;
+import Problems.Problem52;
 
 /**
 project euler 50-100
  */
 public class Main {
   public static void main(String[] args) {
-    Problem51 problem51 = new Problem51();
-    System.out.println(problem51.problem51Solution());
+    Problem52 problem52 = new Problem52();
+    System.out.println(problem52.problem52Solution());
   }
 }
