@@ -21,10 +21,21 @@ import java.math.BigInteger;
 
 public class Problem52 {
 
-  Utility utility = new Utility();
+  public long problem52Solution() {
+    return getAllCsBelowOneMil();
+  }
 
-  public boolean problem52Solution() {
-    return false;
+  private long getAllCsBelowOneMil(){
+    int n = 100;
+    long csBelow1mil = 0;
+    for (int i = 1; i < n + 1; i++) {
+      for (int j = 1; j < n + 1; j++) {
+        if(getC(i, j).compareTo(BigInteger.valueOf(1000000)) > 0) {
+          csBelow1mil++;
+        }
+      }
+    }
+    return csBelow1mil;
   }
 
   private BigInteger getC(int n, int r) {
