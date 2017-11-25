@@ -1,6 +1,5 @@
 package Problems;
 
-import Utils.Utility;
 import java.math.BigInteger;
 
 /**
@@ -19,9 +18,9 @@ import java.math.BigInteger;
  * one-million?
  */
 
-public class Problem52 {
+public class Problem53 {
 
-  public long problem52Solution() {
+  public long problem53Solution() {
     return getAllCsBelowOneMil();
   }
 

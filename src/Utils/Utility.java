@@ -3,13 +3,6 @@ package Utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by The allmighty ____________________  ____   _____  _________________________ \______
- * \______   \/_   | /     \ \_____  \______   \   _  \ |     ___/|       _/ |   |/  \ /  \  _(__ <|
- *       _/  /_\  \ |    |    |    |   \ |   /    Y    \/       \    |   \  \_/   \ |____| |____|_
- * / |___\____|__  /______  /____|_  /\_____  / \/              \/       \/       \/ \/ on 2017. 11.
- * 15..
- */
 public class Utility {
 
   public List<Character> getStringAsCharList(String text) {
