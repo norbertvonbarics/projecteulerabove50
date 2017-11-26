@@ -1,25 +1,31 @@
+package Problems.problem54;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class Problem54 {
 
-  public boolean problem54Solution() {
-    List<String> cards = new ArrayList<>(Arrays.asList("5H", "6H", "7S", "8S", "9D"));
-    List<String> cards2 = new ArrayList<>(Arrays.asList("5D", "6D", "7D", "8D", "9D"));
-    List<String> cards3 = new ArrayList<>(Arrays.asList("10D", "JD", "QD", "KD", "AD"));
+  //todo check same hands
+  
+  IOService ioservice = new IOService();
 
-    System.out.println(checkCards(cards));
-    System.out.println(checkCards(cards2));
-    System.out.println(checkCards(cards3));
-    return false;
+  public int problem54Solution() {
+    return iterateThroughText();
   }
 
-  private int checkHand(String cards) {
+  private int iterateThroughText() {
+    int player1win = 0;
+    List<String> rawfile = ioservice.readFile();
+    for (String hand : rawfile) {
+      if (checkHand(hand)) {
+        player1win++;
+      }
+    }
+    return player1win;
+  }
+
+  private boolean checkHand(String cards) {
     String[] hands = cards.split(" ");
     List<String> player1Cards = new ArrayList<>();
     List<String> player2Cards = new ArrayList<>();
@@ -30,26 +36,10 @@ public class Problem54 {
         player2Cards.add(hands[i]);
       }
     }
-    return 1;
+    return checkCards(player1Cards) > checkCards(player2Cards);
   }
 
-  private int getWinnerOfTheRow(List<String> hand1, List<String> hand2) {
-    Map<String, Integer> rankedHands = new HashMap<>();
-    rankedHands.put("highcard", 1);
-    rankedHands.put("onepair", 2);
-    rankedHands.put("twopairs", 3);
-    rankedHands.put("threeofakind", 4);
-    rankedHands.put("straight", 5);
-    rankedHands.put("flush", 6);
-    rankedHands.put("fullhouse", 7);
-    rankedHands.put("fourofakind", 8);
-    rankedHands.put("straightflush", 9);
-    rankedHands.put("royalflush", 10);
-
-    return 1;
-  }
-
-  private String checkCards(List<String> cards) {
+  private Integer checkCards(List<String> cards) {
     List<Integer> numbers = new ArrayList<>();
     cards.forEach(card -> numbers.add(checkCardsFirstPart(card)));
     Collections.sort(numbers);
@@ -62,17 +52,27 @@ public class Problem54 {
     if (checkCardsSecondPart(cards) && isIStraight(numbers)) {
       if (cardsString.toString()
           .equals(royalReference)) {
-        return "royalflush";
+        return 1000;
       } else {
-        return "straightflush";
+        return 900;
       }
+    } else if (checkFullHouse(numbers).equals("poker")) {
+      return 800;
+    } else if (checkFullHouse(numbers).equals("fullhouse")) {
+      return 700;
+    } else if (checkCardsSecondPart(cards)) {
+      return 600;
     } else if (isIStraight(numbers)) {
-      return "straight";
-    } else if () {
-//Todo below straight logic!!!!
+      return 500;
+    } else if (checkFullHouse(numbers).equals("threeofakind")) {
+      return 400;
+    } else if (checkFullHouse(numbers).equals("twopairs")) {
+      return 300;
+    } else if (checkFullHouse(numbers).equals("pair")) {
+      return 200;
+    } else {
+      return getHighCard(cards);
     }
-
-    return "next time";
   }
 
 
@@ -95,8 +95,8 @@ public class Problem54 {
       return 13;
     } else if (card.startsWith("A")) {
       return 14;
-    } else if (card.length() == 3) {
-      return Integer.parseInt(card.substring(0, 2));
+    } else if (card.startsWith("T")) {
+      return 10;
     } else {
       return Integer.parseInt(card.substring(0, 1));
     }
@@ -123,16 +123,18 @@ public class Problem54 {
     for (int i = 0; i < numbers.size(); i++) {
       int counter = 0;
       for (int j = 0; j < numbers.size(); j++) {
-        if(Objects.equals(numbers.get(i), numbers.get(j))) {counter++;}
+        if (numbers.get(i).equals(numbers.get(j))) {
+          counter++;
+        }
       }
+      occurence.add(counter);
     }
-
-    if(occurence.stream().filter(num -> num.equals(4)).count() >0) {
+    if (occurence.stream().filter(num -> num.equals(4)).count() > 0) {
       return "poker";
-    } else if (occurence.stream().filter(num -> num.equals(3)).count() == 1
+    } else if (occurence.stream().filter(num -> num.equals(3)).count() == 3
         && occurence.stream().filter(num -> num.equals(2)).count() == 2) {
-      return "fullofahouse";
-    } else if(occurence.stream().filter(num -> num.equals(3)).count() == 1) {
+      return "fullhouse";
+    } else if (occurence.stream().filter(num -> num.equals(3)).count() == 3) {
       return "threeofakind";
     } else if (occurence.stream().filter(num -> num.equals(2)).count() == 4) {
       return "twopairs";
@@ -140,5 +142,12 @@ public class Problem54 {
       return "pair";
     }
     return "highcard";
+  }
+
+  private int getHighCard(List<String> cards) {
+    List<Integer> numbers = new ArrayList<>();
+    cards.forEach(card -> numbers.add(checkCardsFirstPart(card)));
+    Collections.sort(numbers);
+    return numbers.get(numbers.size() - 1);
   }
 }

@@ -1,3 +1,5 @@
+import Problems.problem54.Problem54;
+
 /**
 project euler 50-100
  */
